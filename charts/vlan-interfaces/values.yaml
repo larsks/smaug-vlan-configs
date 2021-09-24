@@ -1,0 +1,7 @@
+parent_interfaces:
+  - eth0
+  - eno1
+  - enp4s0f0np0
+vlan_ids:
+  - 100
+  - 101

@@ -1,0 +1,25 @@
+# yamllint disable-file
+{{ range $parent := $.Values.parent_interfaces }}
+{{ range $vlan_id := $.Values.vlan_ids }}
+apiVersion: nmstate.io/v1beta1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: iface-{{ $parent }}-vlan{{ $vlan_id }}
+spec:
+  desiredState:
+    interfaces:
+      - name: vlan{{ $vlan_id }}
+        state: up
+        type: vlan
+        vlan:
+          base-iface: {{ $parent }}
+          id: {{ $vlan_id }}
+        ipv4:
+          dhcp: true
+          enabled: true
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+    massopen.cloud/primary-interface: "{{ $parent }}"
+---
+{{ end }}
+{{ end }}
